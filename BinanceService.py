@@ -8,7 +8,7 @@ def get_top_10(changes: DataFrame, limit: int = 10) -> DataFrame:
 
 
 def get_worst_10(changes: DataFrame, limit: int = 10) -> DataFrame:
-    return changes.sort_values(by='priceChangePercent', ascending=False).head(limit).set_index('Symbol')
+    return changes.sort_values(by='priceChangePercent', ascending=True).head(limit).set_index('Symbol')
 
 
 class BinanceService:
