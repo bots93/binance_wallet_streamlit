@@ -103,7 +103,7 @@ class BinanceDAO:
         last_price = self.client.get_ticker(symbol=symbol)['lastPrice']
         return float(last_price)
 
-    def get_symbol_24H(self, symbol: str) -> list:
+    def get_symbol_24H(self, symbol: str = None) -> list:
         """
                 Desc: Return a list of float type number and str
                  Input:
@@ -113,6 +113,12 @@ class BinanceDAO:
 
                  """
         return self.client.get_ticker(symbol=symbol)
+
+    def get_PriceChange24H(self, quote: str) -> DataFrame:
+        Symbol = [(x['symbol'], x['priceChangePercent']) for x in self.get_symbol_24H()]
+        df_change = DataFrame(data=Symbol, columns=['Symbol', 'priceChangePercent'])
+        dist_c = df_change.where(df_change['Symbol'].str.endswith(quote.upper()))
+        return dist_c
 
     def download_close_p(self, symbol: str, start_d) -> DataFrame:
         """

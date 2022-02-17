@@ -5,6 +5,7 @@ from StreamlitService import StService as C
 from BinanceService import BinanceService
 from DbService import DbService
 from datetime import datetime
+from BinanceService import get_top_10, get_worst_10
 
 
 def Home_Page(api_key: str = '2mYr1HH1a9O3LR3ogAoO9SowRD0DwFX9nLZRUnGifIPmGfmznoVemAqRVc8JKMoC',
@@ -32,11 +33,11 @@ def Home_Page(api_key: str = '2mYr1HH1a9O3LR3ogAoO9SowRD0DwFX9nLZRUnGifIPmGfmzno
             df = bins.get_PriceChange24H(quote=quote)
         with c2:
             st.subheader(f"Top {limit} Gainers")
-            top = bins.get_top_10(df=df, limit=limit)
+            top = get_top_10(changes=df, limit=limit)
             st.dataframe(data=top, height=600)
         with c3:
             st.subheader(f"Top {limit} Losers")
-            worst = bins.get_top_10(df=df, limit=limit)
+            worst = get_top_10(changes=df, limit=limit)
             st.dataframe(data=worst, height=600)
 
 

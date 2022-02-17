@@ -1,6 +1,14 @@
 from datetime import datetime
-
+from pandas import DataFrame
 from BinanceDAO import BinanceDAO
+
+
+def get_top_10(changes: DataFrame, limit: int = 10) -> DataFrame:
+    return changes.sort_values(by='priceChangePercent', ascending=False).head(limit).set_index('Symbol')
+
+
+def get_worst_10(changes: DataFrame, limit: int = 10) -> DataFrame:
+    return changes.sort_values(by='priceChangePercent', ascending=True).head(limit).set_index('Symbol')
 
 
 class BinanceService:
@@ -54,6 +62,9 @@ class BinanceService:
 
     def get_symbol_24H(self, symbol: str):
         return self.__dao.get_symbol_24H(symbol=symbol)
+
+    def get_PriceChange24H(self, quote: str) -> DataFrame:
+        return self.__dao.get_PriceChange24H(quote=quote)
 
     def get_coin_snapshot(self, coin: str):
         return self.__dao.get_coin_snapshot(coin=coin)
