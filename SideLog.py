@@ -1,5 +1,3 @@
-import time
-
 import streamlit as st
 from UsersDAO import UsersDAO
 from DbService import DbService
@@ -17,7 +15,7 @@ def main():
         Home_Page()
 
 
-def Sign(Dbs: DbService):
+def Sign(dbs: DbService):
     side = st.sidebar
     with side:
         auth = side.container()
@@ -26,7 +24,7 @@ def Sign(Dbs: DbService):
             st.write("Please login in your account \n or register your API and connect to your binance account")
             Log_request = auth.expander(label="Log In", expanded=False)
             with Log_request:
-                name = Log_in_form(Dbs)
+                name = Log_in_form(dbs)
 
             Sign_request = auth.expander(label="Sign Up", expanded=False)
             with Sign_request:
@@ -68,10 +66,10 @@ def Sign_up():
                 st.warning("something goes wrong")
 
 
-def Log_in_form(Dbs: DbService):
+def Log_in_form(dbs: DbService):
     try:
-        niknames = Dbs.get_all_value_in_column(name_column='nickname', name_table='users')
-        Passwords = Dbs.get_all_value_in_column(name_column='password', name_table='users')
+        niknames = dbs.get_all_value_in_column(name_column='nickname', name_table='users')
+        Passwords = dbs.get_all_value_in_column(name_column='password', name_table='users')
 
         hashed_passwords = stauth.hasher(Passwords).generate()
         authenticator = stauth.authenticate(niknames, niknames, hashed_passwords,

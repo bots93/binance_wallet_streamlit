@@ -13,7 +13,7 @@ class UsersDAO:
         self.pass_word = pass_word
 
     def get_Api_of_usr(self):
-        Api = self.db_ser.get_select_with_where(select_columns=['api_key','api_secret'],
+        Api = self.db_ser.get_select_with_where(select_columns=['api_key', 'api_secret'],
                                                 where_columns='nickname',
                                                 values_column=self.nick_name,
                                                 name_table='users')
