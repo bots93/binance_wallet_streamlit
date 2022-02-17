@@ -38,4 +38,5 @@ def Home_Page(api_key: str = '2mYr1HH1a9O3LR3ogAoO9SowRD0DwFX9nLZRUnGifIPmGfmzno
         with c3:
             st.subheader(f"Top {limit} Losers")
             worst = get_worst_10(changes=df, limit=limit)
+            st.write(worst)
             st.dataframe(data=worst, height=600)
