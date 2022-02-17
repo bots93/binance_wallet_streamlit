@@ -37,5 +37,5 @@ def Home_Page(api_key: str = '2mYr1HH1a9O3LR3ogAoO9SowRD0DwFX9nLZRUnGifIPmGfmzno
             st.dataframe(data=top, height=600)
         with c3:
             st.subheader(f"Top {limit} Losers")
-            worst = get_top_10(changes=df, limit=limit)
+            worst = get_worst_10(changes=df, limit=limit)
             st.dataframe(data=worst, height=600)
