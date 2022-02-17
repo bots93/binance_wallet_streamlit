@@ -3,15 +3,21 @@ from datetime import datetime
 from DbService import DbService
 from InsertValueInTable import InsertValueInTable
 
-
 class UsersDAO:
 
-    def __init__(self, api_key: str, api_secret: str, nick_name: str, pass_word: str):
+    def __init__(self, api_key: str = None, api_secret: str = None, nick_name: str = None, pass_word: str = None):
         self.db_ser = DbService()
         self.api_key = api_key
         self.api_secret = api_secret
         self.nick_name = nick_name
         self.pass_word = pass_word
+
+    def get_Api_of_usr(self):
+        Api = self.db_ser.get_select_with_where(select_columns=['api_key','api_secret'],
+                                                where_columns='nickname',
+                                                values_column=self.nick_name,
+                                                name_table='users')
+        return Api
 
     def is_user_registered(self) -> bool:
         user = self.db_ser.get_select_with_where(select_columns='nickname',
@@ -41,3 +47,4 @@ class UsersDAO:
         insert_value.insert_orders()
         insert_value.insert_trades()
         insert_value.insert_deposit_withdraw()
+
