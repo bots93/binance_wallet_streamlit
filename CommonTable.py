@@ -57,7 +57,7 @@ class CommonTable: # Update_csn (Crypto, Symbols, Networks)
 
         if add_list:
             self.db.insert(name_table="crypto", list_record=add_list)
-        self.update_update_table(name_table="crypto", end_date=end_date)
+        self.update_update_table(name_table='crypto', end_date=end_date)
 
     def update_symbols(self):
         end_date = dT.now_date()
