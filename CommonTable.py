@@ -18,7 +18,7 @@ class CommonTable: # Update_csn (Crypto, Symbols, Networks)
         self.df = self.database_conn.read_sql_table(table_name='users', index_col='id_user')
         # self.df = pd.read_sql_table('users', engine_fin, index_col='id_user').reset_index()
         # engine_fin.dispose()
-        self.df_symbols = self.database_conn.read_sql_table(table_name="symbols")
+        self.df_symbols = self.database_conn.read_sql_table(table_name='symbols')
         # self.df_symbols = pd.read_sql_table(table_name="symbols", con=engine_fin)
         # engine_fin.dispose()
         self.api_key = self.df.loc[self.df['id_user'] == 1, 'api_key'].values[0]
