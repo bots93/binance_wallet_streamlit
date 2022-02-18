@@ -14,13 +14,13 @@ class UpdateClientTable:
 
     def __init__(self):
 
-        self.db = DbService()
         # self.conn = engine_fin.connect()
         self.database_conn = DatabaseSqlAlchemy(url=url)
         self.df = self.database_conn.read_sql_table(table_name='users')
         # self.df = pd.read_sql_table(table_name='users', con=self.conn)
         # engine_fin.dispose()
         self.common = CommonTable()
+        self.db = DbService()
 
     def last_update_date(self, name_table_update):
 
