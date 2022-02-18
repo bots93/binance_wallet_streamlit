@@ -1,10 +1,9 @@
 tqdm
 numpy
-coinmarketcap
 psycopg2-binary
 python-binance
 pandas
-pyspark
+sqlalchemy
 streamlit
 streamlit_authenticator
 schedule 
