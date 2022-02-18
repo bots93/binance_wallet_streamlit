@@ -1,12 +1,12 @@
 from datetime import timedelta
-
+from database_connection import DatabaseSqlAlchemy
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
 import DateFunction as dT
 from BinanceService import BinanceService
 from CommonTable import CommonTable
-from CreateTables import engine_fin
+from CreateTables import url
 
 pd.set_option('display.max_columns', None)
 
@@ -41,29 +41,36 @@ class StatisticsCoin:
     def __init__(self, id_user: int, api_key: str, api_secret: str):
 
         self.comm = CommonTable()
-        self.df_trade = pd.read_sql(sql=f"select * from trades where id_user={id_user}", con=engine_fin)
-        engine_fin.dispose()
-        self.df_dep = pd.read_sql(sql=f"select * from deposits_crypto where id_user={id_user}",
-                                    con=engine_fin)
-        engine_fin.dispose()
-        self.df_order = pd.read_sql(sql=f"select * from orders where id_user={id_user}",
-                                    con=engine_fin)
-        engine_fin.dispose()
-        self.df_with = pd.read_sql(sql=f"select * from withdraw_crypto where id_user={id_user}",
-                                    con=engine_fin)
-        engine_fin.dispose()
-        self.df_div = pd.read_sql(sql=f"select * from dividends where id_user={id_user}",
-                                    con=engine_fin)
-        engine_fin.dispose()
-        self.df_buy_sell = pd.read_sql(sql=f"select * from buy_sell_fiat where id_user={id_user}",
-                                        con=engine_fin)
-        engine_fin.dispose()
-
-        self.df_symbol = pd.read_sql_table(table_name="symbols", con=engine_fin)
-        engine_fin.dispose()
-
-        self.df_crypto = pd.read_sql_table(table_name="crypto", con=engine_fin)
-        engine_fin.dispose()
+        self.database_conn = DatabaseSqlAlchemy(url=url)
+        self.df_trade = self.database_conn.read_sql(sql=f"select * from trades where id_user={id_user}")
+        # self.df_trade = pd.read_sql(sql=f"select * from trades where id_user={id_user}", con=engine_fin)
+        # engine_fin.dispose()
+        self.df_dep = self.database_conn.read_sql(sql=f"select * from deposits_crypto where id_user={id_user}")
+        # self.df_dep = pd.read_sql(sql=f"select * from deposits_crypto where id_user={id_user}",
+        #                            con=engine_fin)
+        # engine_fin.dispose()
+        self.df_order = self.database_conn.read_sql(sql=f"select * from orders where id_user={id_user}")
+        # self.df_order = pd.read_sql(sql=f"select * from orders where id_user={id_user}",
+        #                            con=engine_fin)
+        # engine_fin.dispose()
+        self.df_with = self.database_conn.read_sql(sql=f"select * from withdraw_crypto where id_user={id_user}")
+        # self.df_with = pd.read_sql(sql=f"select * from withdraw_crypto where id_user={id_user}",
+        #                            con=engine_fin)
+        # engine_fin.dispose()
+        self.df_div = self.database_conn.read_sql(sql=f"select * from dividends where id_user={id_user}")
+        # self.df_div = pd.read_sql(sql=f"select * from dividends where id_user={id_user}",
+        #                            con=engine_fin)
+        # engine_fin.dispose()
+        self.df_buy_sell = self.database_conn.read_sql(sql=f"select * from buy_sell_fiat where id_user={id_user}")
+        # self.df_buy_sell = pd.read_sql(sql=f"select * from buy_sell_fiat where id_user={id_user}",
+        #                                con=engine_fin)
+        # engine_fin.dispose()
+        self.df_symbol = self.database_conn.read_sql_table(table_name="symbols")
+        # self.df_symbol = pd.read_sql_table(table_name="symbols", con=engine_fin)
+        # engine_fin.dispose()
+        self.df_crypto = self.database_conn.read_sql_table(table_name="crypto")
+        # self.df_crypto = pd.read_sql_table(table_name="crypto", con=engine_fin)
+        # engine_fin.dispose()
 
         self.bin_ser = BinanceService(api_key=api_key, api_secret=api_secret)
 

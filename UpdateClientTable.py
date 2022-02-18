@@ -5,8 +5,9 @@ import DateFunction as dT
 import TransfromDataBinance as tdb
 from BinanceService import BinanceService
 from CommonTable import CommonTable
-from CreateTables import engine_fin
+from CreateTables import url
 from DbService import DbService
+from database_connection import DatabaseSqlAlchemy
 
 
 class UpdateClientTable:
@@ -14,8 +15,11 @@ class UpdateClientTable:
     def __init__(self):
 
         self.db = DbService()
-        self.df = pd.read_sql_table('users', engine_fin)
-        engine_fin.dispose()
+        # self.conn = engine_fin.connect()
+        self.database_conn = DatabaseSqlAlchemy(url=url)
+        self.df = self.database_conn.read_sql_table(table_name='users')
+        # self.df = pd.read_sql_table(table_name='users', con=self.conn)
+        # engine_fin.dispose()
         self.common = CommonTable()
 
     def last_update_date(self, name_table_update):

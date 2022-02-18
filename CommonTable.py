@@ -2,10 +2,10 @@ from datetime import datetime
 
 import pandas as pd
 from tqdm import tqdm
-
+from database_connection import DatabaseSqlAlchemy
 import DateFunction as dT
 from BinanceService import BinanceService
-from CreateTables import engine_fin
+from CreateTables import url
 from DbService import DbService
 from InsertValueInTable import InsertValueInTable
 
@@ -14,10 +14,13 @@ class CommonTable: # Update_csn (Crypto, Symbols, Networks)
 
     def __init__(self):
         self.db = DbService()
-        self.df = pd.read_sql_table('users', engine_fin, index_col='id_user').reset_index()
-        engine_fin.dispose()
-        self.df_symbols = pd.read_sql_table(table_name="symbols", con=engine_fin)
-        engine_fin.dispose()
+        self.database_conn = DatabaseSqlAlchemy(url=url)
+        self.df = self.database_conn.read_sql_table(table_name='users', index_col='id_user')
+        # self.df = pd.read_sql_table('users', engine_fin, index_col='id_user').reset_index()
+        # engine_fin.dispose()
+        self.df_symbols = self.database_conn.read_sql_table(table_name="symbols")
+        # self.df_symbols = pd.read_sql_table(table_name="symbols", con=engine_fin)
+        # engine_fin.dispose()
         self.api_key = self.df.loc[self.df['id_user'] == 1, 'api_key'].values[0]
         self.api_secret = self.df.loc[self.df['id_user'] == 1, 'api_secret'].values[0]
         self.ser_bin = BinanceService(api_key=self.api_key, api_secret=self.api_secret)
