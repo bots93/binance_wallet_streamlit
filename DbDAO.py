@@ -83,3 +83,19 @@ class DbDao:
     def delete(self, name_table: str):
         del_str = f"delete from public.{name_table}"
         self.__db.execute_and_commit(del_str)
+
+    def check_connections(self):
+        sel = "select *  from pg_stat_activity"
+        self.__db.execute(sel)
+        rows = self.__db.fetchAll()
+        return [row[0] for row in rows]
+
+    def delete_DB(self):
+        sel = "DROP database jshmvqsc"
+        self.__db.execute_and_commit(sel)
+
+    def show_tables_list(self):
+        sel = "SELECT table_name FROM " \
+              "information_schema.tables WHERE " \
+              "table_schema='public' AND table_type='BASE TABLE'"
+        self.__db.execute_and_commit(sel)

@@ -60,6 +60,7 @@ user = Table('users', meta,
              Column('api_key', String(100), nullable=False),
              Column('api_secret', String(100), nullable=False),
              Column('nickname', String(10), nullable=False),
+             Column('password', String(10), nullable=False),
              PrimaryKeyConstraint('id_user', name='id_user_pk'))
 
 dividends = Table('dividends', meta,
@@ -185,6 +186,12 @@ withdraw_crypto = Table('withdraw_crypto', meta,
 
 meta.create_all(engine_fin)
 
+update_date = Table('update_table', meta,
+                    Column('id_update', BigInteger, Identity("always"), nullable=False, primary_key=True),
+                    Column('name_table', String(40), nullable=False),
+                    Column('start_update_time', TIMESTAMP, nullable=False),
+                    Column('end_update_time', TIMESTAMP, nullable=False),
+                    PrimaryKeyConstraint('id_update', name='update_pk'))
 """
 klines = Table('klines', meta,
                Column('id', Integer, Identity("always"), nullable=False, primary_key=True),
@@ -203,11 +210,6 @@ klines = Table('klines', meta,
                Column('taker_buy_quote_asset_volume', Float(None, decimal_return_scale=7, asdecimal=True),
                       nullable=False),
                PrimaryKeyConstraint('id', name='kline_pk'))
-               
-update_date = Table('update_table', meta,
-                    Column('id_update', BigInteger, Identity("always"), nullable=False, primary_key=True),
-                    Column('name_table', String(40), nullable=False),
-                    Column('start_update_time', TIMESTAMP, nullable=False),
-                    Column('end_update_time', TIMESTAMP, nullable=False),
-                    PrimaryKeyConstraint('id_update', name='update_pk'))
-"""
+     """
+
+

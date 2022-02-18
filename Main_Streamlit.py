@@ -6,8 +6,7 @@ from HomePage import Home_Page
 from SideLog import Sign
 
 
-def main():
-    Dbs = DbService()
+def main(Dbs:DbService):
     nick = Sign(Dbs)
     if nick is not None:
         api = UsersDAO(nick_name=nick).get_Api_of_usr()
@@ -17,6 +16,8 @@ def main():
 
 
 try:
-    main()
+    Dbs = DbService()
+    main(Dbs)
+    print(Dbs.check_connections())
 except:
     print("Errore")

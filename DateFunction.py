@@ -1,4 +1,5 @@
 from datetime import datetime
+from dateutil.relativedelta import *
 
 
 def datetime_to_date(input_data):
@@ -10,7 +11,7 @@ def datetime_to_milliseconds_int(input_data: datetime):
 
 
 def milliseconds_to_datetime(input_data: int):
-    return datetime.fromtimestamp(input_data/1000)
+    return datetime.fromtimestamp(input_data / 1000)
 
 
 def string_to_datetime(input_data, format_date: str):
@@ -23,3 +24,7 @@ def now_date():
 
 def limit(start_date: datetime, end_date: datetime):
     return (datetime_to_date(input_data=end_date) - datetime_to_date(input_data=start_date)).days
+
+
+def get_past_date(data_end: datetime, day: int = 0, month: int = 0, year: int = 0):
+    return data_end + relativedelta(day=+day) + relativedelta(months=+month) + relativedelta(year=+year)

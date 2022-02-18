@@ -40,3 +40,12 @@ class DbService:
 
     def delete(self, name_table: str):
         self.__dao.delete(name_table=name_table)
+
+    def check_connections(self):
+        self.__dao.check_connections()
+
+    def delete_DB(self):
+        self.__dao.delete_DB()
+
+    def show_tables_list(self):
+        self.__dao.show_tables_list()
