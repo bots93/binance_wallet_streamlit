@@ -46,7 +46,7 @@ class CommonTable: # Update_csn (Crypto, Symbols, Networks)
 
         if crypto_to_del:
             for crypto in crypto_to_del:
-                self.db.delete_where_condition(name_table='coin', where_columns='coin', values_column=crypto)
+                self.db.delete_where_condition(name_table='crypto', where_columns='coin', values_column=crypto)
 
         add_list = []
         if crypto_to_add:
