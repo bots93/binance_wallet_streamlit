@@ -55,7 +55,8 @@ class CommonTable: # Update_csn (Crypto, Symbols, Networks)
                     add_list.append((coin['coin'], coin['name'], coin['withdrawAllEnable'], coin['trading'],
                                      coin['networkList'][0]['withdrawEnable']))
 
-        self.db.insert(name_table="crypto", list_record=add_list)
+        if add_list:
+            self.db.insert(name_table="crypto", list_record=add_list)
         self.update_update_table(name_table="crypto", end_date=end_date)
 
     def update_symbols(self):
@@ -78,7 +79,8 @@ class CommonTable: # Update_csn (Crypto, Symbols, Networks)
                     add_symbols.append((symbol_data[i]['symbol'], symbol_data[i]['baseAsset'],
                                         symbol_data[i]['quoteAsset']))
 
-        self.db.insert(name_table='symbols', list_record=add_symbols)
+        if add_symbols:
+            self.db.insert(name_table='symbols', list_record=add_symbols)
         self.update_update_table(name_table="symbols", end_date=end_date)
 
     def get_valid_ticker(self, coin: str, quote: str) -> str:
