@@ -39,7 +39,8 @@ class CommonTable: # Update_csn (Crypto, Symbols, Networks)
     def update_crypto(self):
         end_date = dT.now_date()
         crypto_db = self.db.get_all_value_in_column(name_column='coin', name_table='crypto')
-        coins_bin = self.ser_bin.get_coins()
+        # coins_bin = self.ser_bin.get_coins()
+        coins_bin = [coin['coin'] for coin in self.ser_bin.get_coins()]
         crypto_to_add = list(set(coins_bin) - set(crypto_db))
         crypto_to_del = list(set(crypto_db) - set(coins_bin))
 
