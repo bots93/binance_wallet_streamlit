@@ -57,3 +57,4 @@ class Database:
             self._conn.close()
         except:
             pass
+
