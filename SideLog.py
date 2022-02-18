@@ -5,16 +5,6 @@ import streamlit_authenticator as stauth
 from HomePage import Home_Page
 
 
-def main():
-    Dbs = DbService()
-    nick = Sign(Dbs)
-    if nick is not None:
-        api = UsersDAO(nick_name=nick).get_Api_of_usr()
-        Home_Page(api_key=api[0][0], api_secret=api[0][1])
-    else:
-        Home_Page()
-
-
 def Sign(dbs: DbService):
     side = st.sidebar
     with side:
@@ -87,4 +77,4 @@ def Log_in_form(dbs: DbService):
         print(ex)
 
 
-main()
+
