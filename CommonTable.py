@@ -12,16 +12,16 @@ from InsertValueInTable import InsertValueInTable
 
 class CommonTable: # Update_csn (Crypto, Symbols, Networks)
 
-    def __init__(self):
-        self.db = DbService()
+    def __init__(self, DbService:DbService):
+        self.db = DbService
         self.df = pd.read_sql_table('users', engine_fin, index_col='id_user').reset_index()
         engine_fin.dispose()
         self.df_symbols = pd.read_sql_table(table_name="symbols", con=engine_fin)
         engine_fin.dispose()
         self.api_key = self.df.loc[self.df['id_user'] == 1, 'api_key'].values[0]
         self.api_secret = self.df.loc[self.df['id_user'] == 1, 'api_secret'].values[0]
-        self.ser_bin = BinanceService(api_key=self.api_key, api_secret=self.api_secret)
-        self.ins_tab = InsertValueInTable(api_key=self.api_key, api_secret=self.api_secret)
+        self.ser_bin = BinanceService(api_key=self.api_key, api_secret=self.api_secret,DbService=DbService)
+        self.ins_tab = InsertValueInTable(api_key=self.api_key, api_secret=self.api_secret, DbService=self.db)
 
     def first_insert_common_table(self):
         self.ins_tab.insert_Crypto()
@@ -39,7 +39,7 @@ class CommonTable: # Update_csn (Crypto, Symbols, Networks)
     def update_crypto(self):
         end_date = dT.now_date()
         crypto_db = self.db.get_all_value_in_column(name_column='coin', name_table='crypto')
-        coins_bin = self.ser_bin.get_coins()
+        coins_bin = [coin['coin'] for coin in self.ser_bin.get_coins()]
         crypto_to_add = list(set(coins_bin) - set(crypto_db))
         crypto_to_del = list(set(crypto_db) - set(coins_bin))
 
@@ -54,8 +54,9 @@ class CommonTable: # Update_csn (Crypto, Symbols, Networks)
                     add_list.append((coin['coin'], coin['name'], coin['withdrawAllEnable'], coin['trading'],
                                      coin['networkList'][0]['withdrawEnable']))
 
-        self.db.insert(name_table="crypto", list_record=add_list)
-        self.update_update_table(name_table="crypto", end_date=end_date)
+        if add_list:
+            self.db.insert(name_table="crypto", list_record=add_list)
+            self.update_update_table(name_table="crypto", end_date=end_date)
 
     def update_symbols(self):
         end_date = dT.now_date()
@@ -77,8 +78,9 @@ class CommonTable: # Update_csn (Crypto, Symbols, Networks)
                     add_symbols.append((symbol_data[i]['symbol'], symbol_data[i]['baseAsset'],
                                         symbol_data[i]['quoteAsset']))
 
-        self.db.insert(name_table='symbols', list_record=add_symbols)
-        self.update_update_table(name_table="symbols", end_date=end_date)
+        if add_symbols:
+            self.db.insert(name_table='symbols', list_record=add_symbols)
+            self.update_update_table(name_table="symbols", end_date=end_date)
 
     def get_valid_ticker(self, coin: str, quote: str) -> str:
         ticker = ""

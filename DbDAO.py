@@ -97,5 +97,5 @@ class DbDao:
     def show_tables_list(self):
         sel = "SELECT table_name FROM " \
               "information_schema.tables WHERE " \
-              "table_schema='public' AND table_type='BASE TABLE'"
+              "table_schema='public' AND table_type='BASE TABLE';"
         self.__db.execute_and_commit(sel)

@@ -1,22 +1,22 @@
 import time
 
 import pandas as pd
-
 import DateFunction as dT
 import TransfromDataBinance as tdb
 from BinanceService import BinanceService
 from CommonTable import CommonTable
-from CreateTables import url
+from CreateTables import engine_fin
 from DbService import DbService
 
 
 class UpdateClientTable:
 
-    def __init__(self):
+    def __init__(self, DbService:DbService):
 
-        self.db = DbService()
-        self.df = pd.read_sql_table('users', url)
-        self.common = CommonTable()
+        self.db = DbService
+        self.df = pd.read_sql_table('users', engine_fin)
+        engine_fin.dispose()
+        self.common = CommonTable(DbService=self.db)
 
     def last_update_date(self, name_table_update):
 
@@ -30,7 +30,7 @@ class UpdateClientTable:
 
         all_div = []
         for index, row in self.df.iterrows():
-            ser_bin = BinanceService(api_key=row['api_key'], api_secret=row['api_secret'])
+            ser_bin = BinanceService(api_key=row['api_key'], api_secret=row['api_secret'],DbService=self.db)
             if row['date_registration'] < update_date:
 
                 limit_div = dT.limit(start_date=update_date, end_date=end_date)
@@ -69,7 +69,7 @@ class UpdateClientTable:
 
         all_orders = []
         for index, row in self.df.iterrows():
-            ser_bin = BinanceService(api_key=row['api_key'], api_secret=row['api_secret'])
+            ser_bin = BinanceService(api_key=row['api_key'], api_secret=row['api_secret'],DbService=self.db)
             if row['date_registration'] < update_date:
                 start_date = update_date
             else:
@@ -108,7 +108,7 @@ class UpdateClientTable:
 
         all_trade = []
         for index, row in self.df.iterrows():
-            ser_bin = BinanceService(api_key=row['api_key'], api_secret=row['api_secret'])
+            ser_bin = BinanceService(api_key=row['api_key'], api_secret=row['api_secret'], DbService=self.db)
             if row['date_registration'] < update_date:
                 start_date = update_date
             else:
@@ -137,14 +137,14 @@ class UpdateClientTable:
 
         self.common.update_update_table(name_table="trades", end_date=end_date)
 
-    def deposit_crypto(self):
+    def update_deposit_crypto(self):
 
         update_date = self.last_update_date(name_table_update="deposits_crypto")
         end_date = dT.now_date()
 
         all_deposit = []
         for index, row in self.df.iterrows():
-            ser_bin = BinanceService(api_key=row['api_key'], api_secret=row['api_secret'])
+            ser_bin = BinanceService(api_key=row['api_key'], api_secret=row['api_secret'], DbService=self.db)
             if row['date_registration'] < update_date:
                 start_date = update_date
             else:
@@ -164,13 +164,13 @@ class UpdateClientTable:
 
         self.common.update_update_table(name_table="deposits_crypto", end_date=end_date)
 
-    def withdraw_crypto(self):
+    def update_withdraw_crypto(self):
         update_date = self.last_update_date(name_table_update="withdraw_crypto")
         end_date = dT.now_date()
 
         all_withdraw = []
         for index, row in self.df.iterrows():
-            ser_bin = BinanceService(api_key=row['api_key'], api_secret=row['api_secret'])
+            ser_bin = BinanceService(api_key=row['api_key'], api_secret=row['api_secret'],DbService=self.db)
             if row['date_registration'] < update_date:
                 start_date = update_date
             else:
@@ -192,14 +192,14 @@ class UpdateClientTable:
 
         self.common.update_update_table(name_table="withdraw_crypto", end_date=end_date)
 
-    def deposit_withdraw_fiat(self, withdraws_deposits: str):
+    def update_deposit_withdraw_fiat(self, withdraws_deposits: str):
 
         update_date = self.last_update_date(name_table_update="deposit_withdraw_fiat")
         end_date = dT.now_date()
 
         all_fiat = []
         for index, row in self.df.iterrows():
-            ser_bin = BinanceService(api_key=row['api_key'], api_secret=row['api_secret'])
+            ser_bin = BinanceService(api_key=row['api_key'], api_secret=row['api_secret'], DbService=self.db)
             if row['date_registration'] < update_date:
                 start_date = update_date
             else:
@@ -231,13 +231,13 @@ class UpdateClientTable:
 
         self.common.update_update_table(name_table="deposit_withdraw_fiat", end_date=end_date)
 
-    def buy_sell_fiat(self, buy_sell: str):
+    def update_buy_sell_fiat(self, buy_sell: str):
         update_date = self.last_update_date(name_table_update="deposit_withdraw_fiat")
         end_date = dT.now_date()
 
         all_transaction = []
         for index, row in self.df.iterrows():
-            ser_bin = BinanceService(api_key=row['api_key'], api_secret=row['api_secret'])
+            ser_bin = BinanceService(api_key=row['api_key'], api_secret=row['api_secret'], DbService=self.db)
             if row['date_registration'] < update_date:
                 start_date = update_date
             else:
@@ -267,3 +267,16 @@ class UpdateClientTable:
                 self.db.insert(name_table="buy_sell_fiat", list_record=all_transaction)
 
             self.common.update_update_table(name_table="buy_sell_fiat", end_date=end_date)
+
+    def update_all_table(self):
+        self.common.update_crypto()
+        self.common.update_symbols()
+        self.update_dividends()
+        self.update_orders()
+        self.update_trades()
+        self.update_deposit_crypto()
+        self.update_deposit_withdraw_fiat(withdraws_deposits="deposit")
+        self.update_deposit_withdraw_fiat(withdraws_deposits="withdraw")
+        self.update_withdraw_crypto()
+        self.update_buy_sell_fiat(buy_sell="buy")
+        self.update_buy_sell_fiat(buy_sell="sell")

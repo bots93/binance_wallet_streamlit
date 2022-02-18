@@ -2,7 +2,6 @@ import streamlit as st
 from UsersDAO import UsersDAO
 from DbService import DbService
 import streamlit_authenticator as stauth
-from HomePage import Home_Page
 
 
 def Sign(dbs: DbService):
@@ -18,11 +17,11 @@ def Sign(dbs: DbService):
 
             Sign_request = auth.expander(label="Sign Up", expanded=False)
             with Sign_request:
-                Sign_up()
+                Sign_up(dbs)
     return name
 
 
-def Sign_up():
+def Sign_up(dbs: DbService):
     st.title("Welcome dear Binancer")
     st.write("Please insert your Binance Api Key and a valid nickname")
     New_user_Registration = st.form(key="New_user_Registration", clear_on_submit=True)
@@ -45,9 +44,11 @@ def Sign_up():
         submit_button = st.form_submit_button(label='Submit')
 
         if submit_button:
-            Usr = UsersDAO(api_key=ApiKey, api_secret=ApiSec, nick_name=nick, pass_word=password)
+            Usr = UsersDAO(api_key=ApiKey, api_secret=ApiSec, nick_name=nick, pass_word=password, DbService=dbs)
             if not Usr.is_user_registered():
                 Usr.insert_user()
+                # RIEMPIRE TABELLE CLIENTE
+                # REGISTRARE DATA REGISTRAZIONE
                 st.success(f"Hello dear {nick}, you have successufully registered")
 
             elif Usr.is_user_registered():

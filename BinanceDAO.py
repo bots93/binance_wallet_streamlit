@@ -12,11 +12,11 @@ from DbService import DbService
 
 class BinanceDAO:
 
-    def __init__(self, api_key: str, api_secret: str):
+    def __init__(self, DbService:DbService, api_key: str, api_secret: str):
         self.api_key = api_key
         self.api_secret = api_secret
         self.client = Client(api_key=self.api_key, api_secret=self.api_secret)
-        self.db = DbService()
+        self.db = DbService
         self.id_user = self.db.get_select_with_where(select_columns='id_user', name_table="users",
                                                      where_columns=['api_key', 'api_secret'],
                                                      values_column=[api_key, api_secret])[0]

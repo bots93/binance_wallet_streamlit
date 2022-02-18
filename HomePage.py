@@ -8,12 +8,13 @@ from datetime import datetime
 from BinanceService import get_top_10, get_worst_10
 
 
-def Home_Page(api_key: str = '2mYr1HH1a9O3LR3ogAoO9SowRD0DwFX9nLZRUnGifIPmGfmznoVemAqRVc8JKMoC',
+def Home_Page(DbService:DbService, api_key: str = '2mYr1HH1a9O3LR3ogAoO9SowRD0DwFX9nLZRUnGifIPmGfmznoVemAqRVc8JKMoC',
               api_secret: str = 'LvUCcMAe3FecFpY9KVQMOquD8UpYHJfCY1y9EbzMgbSCwhHBmB4CruhsBUzKYsa5'):
     """ Banner Image Jpg """
+    #dbs = DbService()
     bins = BinanceService(api_key=api_key,
-                          api_secret=api_secret)
-    dbs = DbService()
+                          api_secret=api_secret, DbService=DbService)
+
     C().Import_pic(name='banner_home.jpg', caption="Track your Binance Investments")
 
     # Quantify Crypto Heatmap
@@ -24,7 +25,7 @@ def Home_Page(api_key: str = '2mYr1HH1a9O3LR3ogAoO9SowRD0DwFX9nLZRUnGifIPmGfmzno
     with st.container():
         st.header(f"Trending Crypto of the Day {datetime.today().date()}")
 
-        fiat = dbs.get_all_value_in_column(name_column='distinct quote_asset', name_table='symbols')
+        fiat = DbService.get_all_value_in_column(name_column='distinct quote_asset', name_table='symbols')
 
         c1, c2, c3 = st.columns([1, 2, 2])
         with c1:

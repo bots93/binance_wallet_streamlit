@@ -11,9 +11,13 @@ from DbService import DbService
 
 class InsertValueInTable:
 
-    def __init__(self, api_key: str, api_secret: str):
-        self.ser_db = DbService()
-        self.ser_bin = BinanceService(api_key=api_key, api_secret=api_secret)
+    def __init__(self,
+                 DbService:DbService,
+                 api_key: str,
+                 api_secret: str):
+
+        self.ser_db = DbService
+        self.ser_bin = BinanceService(DbService=DbService,api_key=api_key, api_secret=api_secret)
 
     def insert_Crypto(self):
         if not self.ser_db.is_not_empty(name_table="crypto"):

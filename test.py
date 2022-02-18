@@ -5,9 +5,9 @@ import numpy as np
 from BinanceService import BinanceService
 import DateFunction as dt
 from DbService import DbService
+from CommonTable import CommonTable
 
-print(DbService().show_tables_list())
-#DbService().delete_DB()
+
 
 """ 
 def get_Corr_HeatMap(data: pd.DataFrame):
@@ -28,7 +28,8 @@ for tick in tickers:
     df.insert(2, tick,
               bins.get_price_historical_kline(symbol=tick,
                                               interval='1d',
-                                              start_date=dt.get_past_data(dt.now_date(), month=6),
+                                              start_date=dt.get_past_date(dt.now_date(), month=6),
                                               end_date=dt.now_date()), True)
 print(df)
 """
+

@@ -1,6 +1,7 @@
 from datetime import datetime
 from pandas import DataFrame
 from BinanceDAO import BinanceDAO
+from DbService import DbService
 
 
 def get_top_10(changes: DataFrame, limit: int = 10) -> DataFrame:
@@ -13,8 +14,8 @@ def get_worst_10(changes: DataFrame, limit: int = 10) -> DataFrame:
 
 class BinanceService:
 
-    def __init__(self, api_key: str, api_secret: str):
-        self.__dao = BinanceDAO(api_key=api_key, api_secret=api_secret)
+    def __init__(self, DbService:DbService, api_key: str, api_secret: str):
+        self.__dao = BinanceDAO(DbService=DbService, api_key=api_key, api_secret=api_secret)
 
     def get_flexible_position(self, coin: str):
         return self.__dao.get_flexible_position(coin=coin)

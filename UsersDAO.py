@@ -3,10 +3,16 @@ from datetime import datetime
 from DbService import DbService
 from InsertValueInTable import InsertValueInTable
 
+
 class UsersDAO:
 
-    def __init__(self, api_key: str = None, api_secret: str = None, nick_name: str = None, pass_word: str = None):
-        self.db_ser = DbService()
+    def __init__(self,
+                 DbService: DbService,
+                 api_key: str = None,
+                 api_secret: str = None,
+                 nick_name: str = None,
+                 pass_word: str = None):
+        self.db_ser = DbService
         self.api_key = api_key
         self.api_secret = api_secret
         self.nick_name = nick_name
@@ -36,9 +42,9 @@ class UsersDAO:
 
     def insert_user(self):
         return self.db_ser.insert(name_table='users', list_record=[(self.api_key, self.api_secret,
-                                                                              self.nick_name,
-                                                                              self.pass_word,
-                                                                              datetime.now())])
+                                                                    self.nick_name,
+                                                                    self.pass_word,
+                                                                    datetime.now())])
 
     def insert_new_user_and_data(self):
         self.insert_user()
@@ -47,4 +53,3 @@ class UsersDAO:
         insert_value.insert_orders()
         insert_value.insert_trades()
         insert_value.insert_deposit_withdraw()
-
