@@ -10,7 +10,7 @@ class DatabaseSqlAlchemy:
         self.__create_connection()
 
     def __create_connection(self):
-        self.__engine = create_engine(self.url, pool_size=50, echo=False)
+        self.__engine = create_engine(self.url, pool_size=9, echo=False)
         self.__conn = self.__engine.connect()
 
     def __close_connection(self):
