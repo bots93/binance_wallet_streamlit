@@ -3,6 +3,7 @@ from datetime import datetime
 from DbService import DbService
 from InsertValueInTable import InsertValueInTable
 
+
 class UsersDAO:
 
     def __init__(self, api_key: str = None, api_secret: str = None, nick_name: str = None, pass_word: str = None):

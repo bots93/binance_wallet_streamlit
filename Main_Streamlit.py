@@ -21,7 +21,7 @@ def main():
         Home_Page()
 
 
-schedule.every().day.at("12:00").do(update_t.update_all_table())
+schedule.every().day.at("00:00").do(update_t.update_all_table())
 
 try:
     main()

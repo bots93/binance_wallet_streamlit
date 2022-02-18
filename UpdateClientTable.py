@@ -15,6 +15,7 @@ class UpdateClientTable:
 
         self.db = DbService()
         self.df = pd.read_sql_table('users', engine_fin)
+        engine_fin.dispose()
         self.common = CommonTable()
 
     def last_update_date(self, name_table_update):
