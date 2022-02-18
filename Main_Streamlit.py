@@ -4,6 +4,11 @@ from DbService import DbService
 import streamlit_authenticator as stauth
 from HomePage import Home_Page
 from SideLog import Sign
+import schedule
+from UpdateClientTable import UpdateClientTable
+import time
+
+update_t = UpdateClientTable()
 
 
 def main():
@@ -16,7 +21,12 @@ def main():
         Home_Page()
 
 
+schedule.every().day.at("12:00").do(update_t.update_all_table())
+
 try:
     main()
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 except:
     print("Errore")
